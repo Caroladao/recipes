@@ -1,5 +1,12 @@
-{
+{ 
+  "name": "Recipes App",
+  "version": "1.0",
   "main": "node_modules/expo/AppEntry.js",
+  "author": {
+    "name" : "Caroline Adão", 
+    "email" : "carolineadao1@gmail.com",
+    "url" : "https://caroladao.github.io/"
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
