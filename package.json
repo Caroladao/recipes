@@ -1,5 +1,5 @@
 { 
-  "name": "Recipes App",
+  "name": "MyRecipes",
   "version": "1.0",
   "main": "node_modules/expo/AppEntry.js",
   "author": {
