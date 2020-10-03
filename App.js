@@ -1,23 +1,55 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from './Colors';
+import List from './components/List';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <View style={{flexDirection: "row"}}>
-        <View style={styles.divider} />
-        <Text style={styles.title}>My<Text style={styles.title2}>Recipes</Text></Text>
-        <View style={styles.divider} />
+export default class App extends React.Component {
+  state = {
+    recipes: [{
+      name: "receita 1",
+      color: "#02abff"
+    },
+    {
+      name: "Bolinho de arroz",
+      color: "#02abff"
+    },
+    {
+      name: "Torta de limão",
+      color: "#02abff"
+    }],
+  };
+
+
+  renderList = item => {
+    return <List recipe={item} />;
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={{flexDirection: "row"}}>
+          <View style={styles.divider} />
+          <Text style={styles.title}>My<Text style={styles.title2}>Recipes</Text></Text>
+          <View style={styles.divider} />
+        </View>
+  
+        <TouchableOpacity style={styles.addItem}>
+          <MaterialIcons name="add-circle" size={60} color={colors.blue} />
+        </TouchableOpacity>
+
+        <View style={{height: 300, paddingLeft: 32}}>
+          <FlatList 
+            data={this.state.recipes} 
+            keyExtractor={ item => item.name } 
+            horizontal={false} 
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => this.renderList(item)}
+            />
+        </View>
       </View>
-
-      
-      <TouchableOpacity style={styles.addItem}>
-        <MaterialIcons name="add-circle" size={60} color={colors.blue} />
-      </TouchableOpacity>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
