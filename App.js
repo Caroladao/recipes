@@ -1,25 +1,50 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import colors from './Colors';
+import colors from './utils/Colors';
 import List from './components/List';
+import AddModal from './components/AddModal'
 
+const height = Dimensions.get('window').height; //full height
 export default class App extends React.Component {
   state = {
+    addRecipeVisible: false,
     recipes: [{
       name: "receita 1",
-      color: "#02abff"
-    },
-    {
-      name: "Bolinho de arroz",
-      color: "#02abff"
-    },
-    {
-      name: "Torta de limão",
-      color: "#02abff"
+      category: {
+        name: "Assados",
+        color: "#24A6D9"
+      },
+      ingredients: [
+        {
+          title: "Dentes de Alho",
+          completed: false
+        },
+        {
+          title: "Sal",
+          completed: false
+        },
+      ],
+      tasks: [
+        {
+          title: "Coloque tudo no liquidificador",
+          completed: false
+        },
+        {
+          title: "Deixe bater até ficar cremoso",
+          completed: false
+        }
+      ]
     }],
   };
 
+  addRecipe = recipe => {
+    this.state.recipes.push(recipe)
+  }
+
+  toggleAddRecipeModal() {
+    this.setState({ addRecipeVisible: !this.state.addRecipeVisible });
+  };
 
   renderList = item => {
     return <List recipe={item} />;
@@ -28,17 +53,25 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flexDirection: "row"}}>
+        <Modal
+          animationType="slide"
+          visible={ this.state.addRecipeVisible }
+          onRequestClose={() => this.toggleAddRecipeModal() }
+        >
+          <AddModal closeModal={() => this.toggleAddRecipeModal()} addRecipe={this.addRecipe}/>
+        </Modal>
+
+        <View style={{flexDirection: "row", marginTop: 64, marginBottom: 36}}>
           <View style={styles.divider} />
           <Text style={styles.title}>My<Text style={styles.title2}>Recipes</Text></Text>
           <View style={styles.divider} />
         </View>
   
-        <TouchableOpacity style={styles.addItem}>
-          <MaterialIcons name="add-circle" size={60} color={colors.blue} />
+        <TouchableOpacity style={styles.addItem} onPress={() => this.toggleAddRecipeModal()}>
+          <MaterialIcons name="add" size={36} color={colors.white} />
         </TouchableOpacity>
 
-        <View style={{height: 300, paddingLeft: 32}}>
+        <View style={{marginBottom: 10, paddingHorizontal: 10, height: height - 174}}>
           <FlatList 
             data={this.state.recipes} 
             keyExtractor={ item => item.name } 
@@ -57,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   divider: {
     backgroundColor: colors.lightBlue,
@@ -76,10 +109,23 @@ const styles = StyleSheet.create({
     color: colors.blue,
   },
   addItem: {
-    alignItems: 'center',
+    backgroundColor: colors.black,
     justifyContent: 'center',
+    borderRadius: 60,
+    alignItems: 'center',
     position: 'absolute',
+    zIndex: 2,
     bottom: 15,
-    right: 15
+    height: 60,
+    width: 60,
+    right: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 7,
   }
 });

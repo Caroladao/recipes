@@ -1,18 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity,  } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import colors from '../Colors';
+import colors from '../utils/Colors';
 
-const width = Dimensions.get('window').width; //full width
-const height = Dimensions.get('window').height; //full height
 export default class List extends React.Component {
+  state = {
+    showIngredientsVisible: false,
+    showRecipeVisible: false
+  }
 
   render() {
     const recipe = this.props.recipe;
     
     return (
       <View style={styles.container}>
-        <View style={[styles.listContainer, {backgroundColor: recipe.color}]}>
+        <View style={[styles.listContainer, {borderLeftColor: recipe.category.color}]}>
+          <Text style={[styles.categoryName, {color: recipe.category.color}]} numberOfLines={1}>
+            {recipe.category.name}
+          </Text>
           <Text style={styles.listTitle} numberOfLines={1}>
             {recipe.name}
           </Text>
@@ -34,24 +39,36 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
     margin: 0,
-    width: width
   },
   listContainer: {
+    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    borderRadius: 6,
     marginHorizontal: 0,
     marginVertical: 4,
     alignSelf: 'stretch',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: 340
+    borderBottomWidth: 1,
+    borderLeftWidth: 6,
+    borderBottomRightRadius: 6,
+    borderBottomColor: "#f5f5f5",
+    width: 340,
   },
   listTitle: {
-    fontSize: 20,
+    marginTop: 5,
+    marginBottom: 18,
     fontWeight: "bold",
-    color: colors.white,
-    marginBottom: 18
+    fontSize: 20,
+    color: colors.black,
+    textTransform: "capitalize"
+  },
+  categoryName : {
+    fontSize: 12,
+    color: 12,
+    position: 'absolute',
+    left: 16,
+    top: 8
   },
   delete: {
     alignItems: "center",
