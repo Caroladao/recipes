@@ -1,12 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity,  } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
+import RecipeModal from './RecipeModal'
 import colors from '../utils/Colors';
 
 export default class List extends React.Component {
   state = {
-    showIngredientsVisible: false,
     showRecipeVisible: false
+  }
+
+  toggleRecipeModal() {
+    this.setState({ showRecipeVisible: !this.state.showRecipeVisible })
   }
 
   render() {
@@ -17,7 +20,22 @@ export default class List extends React.Component {
     
     return (
       <View style={styles.container}>
-        <View style={[styles.listContainer, {borderLeftColor: recipe.category.color}]}>
+        <Modal
+          animationType="slide"
+          visible={ this.state.showRecipeVisible }
+          onRequestClose={() => this.toggleRecipeModal() }
+        >
+          <RecipeModal 
+            recipe={recipe} 
+            closeModal={() => this.toggleRecipeModal()}
+            // updateRecipe={this.props.updateRecipe} 
+          />
+        </Modal>
+
+        <TouchableOpacity 
+          style={[styles.listContainer, {borderLeftColor: recipe.category.color}]}
+          onPress={() => this.toggleRecipeModal()}
+        >
           <Text style={[styles.categoryName, {color: recipe.category.color}]} numberOfLines={1}>
             {recipe.category.name}
           </Text>
@@ -26,21 +44,21 @@ export default class List extends React.Component {
           </Text>
 
           <View style={styles.recipeData}>
-            <TouchableOpacity 
+            <View 
               style={styles.recipeNumber} 
               // onPress={() => this.toggleIngredientsModal()}
             >
               <Text style={{marginRight: 4}}>{ingredients}</Text>
               <Text style={styles.subtitle}>Ingredientes</Text>
-            </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity 
+            <View 
               style={styles.recipeNumber}
               // onPress={() => this.toggleTasksModal()}
             >
               <Text style={{marginRight: 4}}>{tasks}</Text>
               <Text style={styles.subtitle}>Passos</Text>
-            </TouchableOpacity>
+            </View>
           </View>
 
           {/* <View>
@@ -49,7 +67,7 @@ export default class List extends React.Component {
             </TouchableOpacity>
           </View> */}
           
-        </View>
+        </TouchableOpacity>
       </View>
     );
   }
