@@ -24,7 +24,7 @@ export default class AddModal extends React.Component {
     this.props.closeModal();
   }
 
-  renderCategories() {
+  renderCategories = () => {
     return categories.map(category => (
       <TouchableOpacity 
         key={category.name} 

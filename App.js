@@ -49,13 +49,12 @@ export default class App extends React.Component {
     this.setState({recipes})
   }
 
-  toggleAddRecipeModal() {
+  toggleAddRecipeModal = () => {
     this.setState({ addRecipeVisible: !this.state.addRecipeVisible });
   };
 
-  renderList = item => {
-    return <List recipe={item} updateRecipe={this.updateRecipe}/>;
-  };
+  renderList = item => 
+    <List recipe={item} updateRecipe={this.updateRecipe} deleteRecipe={this.deleteRecipe} />;
 
   updateRecipe = recipe => {
     this.setState({
@@ -86,6 +85,11 @@ export default class App extends React.Component {
           <MaterialIcons name="add" size={36} color={colors.white} />
         </TouchableOpacity>
 
+        { this.state.recipes.length === 0 ?
+          <View style={{flex: 1, justifyContent: 'flex-start'}}>
+            <Text style={styles.noRecipes}> You don't have recipes</Text>
+          </View>
+        :
         <View style={{marginBottom: 10, paddingHorizontal: 10, height: height - 174}}>
           <FlatList 
             data={this.state.recipes} 
@@ -95,6 +99,7 @@ export default class App extends React.Component {
             renderItem={({item}) => this.renderList(item)}
             />
         </View>
+        }
       </View>
     );
   }
@@ -122,6 +127,10 @@ const styles = StyleSheet.create({
   title2: {
     fontWeight: 'bold',
     color: colors.blue,
+  },
+  noRecipes: {
+    fontWeight: 'bold',
+    fontSize: 24
   },
   addItem: {
     backgroundColor: colors.black,

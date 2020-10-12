@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, FlatList, Animated } from 'react-native';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import colors from '../utils/Colors'
 import DialogInput from 'react-native-dialog-input';
@@ -12,7 +12,7 @@ export default class recipeModal extends React.Component {
     }
   }
 
-  handleDialogVisible(type) {
+  handleDialogVisible = (type) => {
     const dialog = this.state.isDialogVisible
     dialog[type] = !this.state.isDialogVisible[type]
 
@@ -45,31 +45,28 @@ export default class recipeModal extends React.Component {
     this.props.updateRecipe(recipe);
   }
 
-  renderIngredients = (item, index, type) => {
-    return (
-      <View style={styles.itemContainer}>
-        <TouchableOpacity onPress={() => this.toggleItemCompleted(index, type)}>
-          <Ionicons 
-            name={item.completed ? 'ios-checkbox' : 'ios-square-outline'}
-            size={28} 
-            color={colors.grey} 
-            style={{ width: 32 }} 
-          />
-        </TouchableOpacity>
-        <Text 
-          style={[styles.itemList, {textDecorationLine: item.completed ? 'line-through' : 'none', color: item.completed ? colors.grey : colors.black}]}
-        >
-          {item.title}
-        </Text>
-        <TouchableOpacity 
-          onPress={() => this.deleteItem( index, type )}
-          style={styles.deleteButton}
-        >
-          <Text style={{fontWeight: 'bold'}}> Delete </Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+  renderItems = (item, index, type) => 
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => this.toggleItemCompleted(index, type)}>
+        <Ionicons 
+          name={item.completed ? 'ios-checkbox' : 'ios-square-outline'}
+          size={28} 
+          color={colors.grey} 
+          style={{ width: 32 }} 
+        />
+      </TouchableOpacity>
+      <Text 
+        style={[styles.itemList, {textDecorationLine: item.completed ? 'line-through' : 'none', color: item.completed ? colors.grey : colors.black}]}
+      >
+        {item.title}
+      </Text>
+      <TouchableOpacity 
+        onPress={() => this.deleteItem( index, type )}
+        style={styles.deleteButton}
+      >
+        <Text style={{fontWeight: 'bold'}}> Delete </Text>
+      </TouchableOpacity>
+    </View>
   
   render() {
     const recipe = this.props.recipe;
@@ -98,7 +95,7 @@ export default class recipeModal extends React.Component {
           </Text>
           <FlatList 
             data={ingredients} 
-            renderItem={({item, index}) => this.renderIngredients(item, index, 'ingredients')}
+            renderItem={({item, index}) => this.renderItems(item, index, 'ingredients')}
             keyExtractor={ item => item.title }
             showsVerticalScrollIndicator={false}
           />
@@ -129,7 +126,7 @@ export default class recipeModal extends React.Component {
           </Text>
           <FlatList 
             data={tasks} 
-            renderItem={({item, index}) => this.renderIngredients(item, index, 'tasks')}
+            renderItem={({item, index}) => this.renderItems(item, index, 'tasks')}
             keyExtractor={ item => item.title }
             showsVerticalScrollIndicator={false}
           />

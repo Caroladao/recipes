@@ -2,13 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
 import RecipeModal from './RecipeModal'
 import colors from '../utils/Colors';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default class List extends React.Component {
   state = {
     showRecipeVisible: false
   }
 
-  toggleRecipeModal() {
+  toggleRecipeModal = () => {
     this.setState({ showRecipeVisible: !this.state.showRecipeVisible })
   }
 
@@ -45,8 +46,7 @@ export default class List extends React.Component {
 
           <View style={styles.recipeData}>
             <View 
-              style={styles.recipeNumber} 
-              // onPress={() => this.toggleIngredientsModal()}
+              style={styles.recipeNumber}
             >
               <Text style={{marginRight: 4}}>{ingredients}</Text>
               <Text style={styles.subtitle}>Ingredientes</Text>
@@ -54,18 +54,15 @@ export default class List extends React.Component {
 
             <View 
               style={styles.recipeNumber}
-              // onPress={() => this.toggleTasksModal()}
             >
               <Text style={{marginRight: 4}}>{tasks}</Text>
               <Text style={styles.subtitle}>Passos</Text>
             </View>
           </View>
 
-          {/* <View>
-            <TouchableOpacity style={styles.delete} >
-              <MaterialIcons name="delete" size={24} color={colors.red} />
-            </TouchableOpacity>
-          </View> */}
+          <TouchableOpacity style={styles.delete} onPress={() => this.props.deleteRecipe(recipe)} >
+            <MaterialIcons name="delete" size={24} color={colors.black} />
+          </TouchableOpacity>
           
         </TouchableOpacity>
       </View>
@@ -108,13 +105,6 @@ const styles = StyleSheet.create({
     left: 16,
     top: 4,
     fontWeight: 'bold'
-    // top: 0,
-    // left: -1,
-    // paddingLeft: 16,
-    // paddingRight: 8,
-    // color: '#fff',
-    // borderTopRightRadius: 6,
-    // borderBottomRightRadius: 6
   },
   recipeData: {
     justifyContent: "flex-start",
@@ -125,9 +115,12 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   delete: {
-    alignItems: "center",
+    position: 'absolute',
+    alignItems: 'center',
+    right: 0,
+    top: 0,
     borderWidth: 2,
-    borderColor: colors.red,
+    borderColor: colors.black,
     marginTop: 16,
     paddingVertical: 8,
     paddingHorizontal: 8,
