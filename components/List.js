@@ -28,7 +28,7 @@ export default class List extends React.Component {
           <RecipeModal 
             recipe={recipe} 
             closeModal={() => this.toggleRecipeModal()}
-            // updateRecipe={this.props.updateRecipe} 
+            updateRecipe={this.props.updateRecipe} 
           />
         </Modal>
 

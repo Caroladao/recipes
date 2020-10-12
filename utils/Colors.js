@@ -5,7 +5,8 @@ const colors = {
   strongBlue: "#005580",
   white: "#FFFFFF",
   grey: "#CACACA",
-  red: "#D85963"
+  red: "#D85963",
+  green: "#8FBB62"
 }
 
 export default colors;

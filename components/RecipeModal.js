@@ -2,20 +2,53 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, FlatList } from 'react-native';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import colors from '../utils/Colors'
+import DialogInput from 'react-native-dialog-input';
 
 export default class recipeModal extends React.Component {
-
-  toggleIngredientCompleted = index => {
-    let recipe = this.props.recipe;
-    recipe.ingredients[index].completed = !recipe.ingredients[index].completed;
-
-    // this.props.updateRecipe( recipe );   
+  state = {
+    isDialogVisible: {
+      ingredients: false,
+      tasks: false
+    }
   }
 
-  renderIngredients = (item, index) => {
+  handleDialogVisible(type) {
+    const dialog = this.state.isDialogVisible
+    dialog[type] = !this.state.isDialogVisible[type]
+
+    this.setState({ isDialogVisible: dialog })
+  };
+
+  toggleItemCompleted = (index, type) => {
+    let recipe = this.props.recipe
+    recipe[type][index].completed = !recipe[type][index].completed
+
+    this.props.updateRecipe(recipe)
+  }
+
+  addItem = (text, type) => {
+    let recipe = this.props.recipe
+    recipe[type].push({title: text, completed: false})
+
+    this.props.updateRecipe(recipe)
+
+    this.setState({ isDialogVisible: {
+      ingredients: false,
+      tasks: false
+    } })
+  }
+
+  deleteItem = (index, type) => {
+    let recipe = this.props.recipe;
+    recipe[type].splice(index, 1);
+
+    this.props.updateRecipe(recipe);
+  }
+
+  renderIngredients = (item, index, type) => {
     return (
       <View style={styles.itemContainer}>
-        <TouchableOpacity onPress={() => this.toggleIngredientCompleted(index)}>
+        <TouchableOpacity onPress={() => this.toggleItemCompleted(index, type)}>
           <Ionicons 
             name={item.completed ? 'ios-checkbox' : 'ios-square-outline'}
             size={28} 
@@ -29,10 +62,10 @@ export default class recipeModal extends React.Component {
           {item.title}
         </Text>
         <TouchableOpacity 
-          // onPress={() => this.deleteItem( index )}
+          onPress={() => this.deleteItem( index, type )}
           style={styles.deleteButton}
         >
-          <Text style={{color: colors.white, fontWeight: 'bold'}}> Delete </Text>
+          <Text style={{fontWeight: 'bold'}}> Delete </Text>
         </TouchableOpacity>
       </View>
     )
@@ -65,10 +98,29 @@ export default class recipeModal extends React.Component {
           </Text>
           <FlatList 
             data={ingredients} 
-            renderItem={({item, index}) => this.renderIngredients(item, index)}
+            renderItem={({item, index}) => this.renderIngredients(item, index, 'ingredients')}
             keyExtractor={ item => item.title }
             showsVerticalScrollIndicator={false}
           />
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+              style={styles.addItemButton}
+              onPress={() => this.handleDialogVisible('ingredients')}
+            >
+              <MaterialIcons name="add" size={24} color={colors.black} />
+              <Text>Add ingredient</Text>
+            </TouchableOpacity>
+          </View>
+
+          <DialogInput 
+            isDialogVisible={this.state.isDialogVisible.ingredients}
+            title={`Add ingredient`}
+            hintInput ={'Insert new ingredient here'}
+            submitInput={ (inputText) => {this.addItem(inputText, 'ingredients')} }
+            closeDialog={ () => this.handleDialogVisible('ingredients')}
+          >
+          </DialogInput>
         </View>
 
         <View style={styles.section}>
@@ -77,10 +129,29 @@ export default class recipeModal extends React.Component {
           </Text>
           <FlatList 
             data={tasks} 
-            renderItem={({item, index}) => this.renderIngredients(item, index)}
+            renderItem={({item, index}) => this.renderIngredients(item, index, 'tasks')}
             keyExtractor={ item => item.title }
             showsVerticalScrollIndicator={false}
           />
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+              style={styles.addItemButton}
+              onPress={() => this.handleDialogVisible('tasks')}
+            >
+              <MaterialIcons name="add" size={24} color={colors.black} />
+              <Text>Add task</Text>
+            </TouchableOpacity>
+          </View>
+
+          <DialogInput 
+            isDialogVisible={this.state.isDialogVisible.tasks}
+            title={`Add task`}
+            hintInput ={'Insert new task here'}
+            submitInput={ (inputText) => {this.addItem(inputText, 'tasks')} }
+            closeDialog={ () => this.handleDialogVisible('tasks')}
+          >
+          </DialogInput>
         </View>
       </KeyboardAvoidingView>
     )
@@ -135,7 +206,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 6,
     position: 'relative',
   },
   itemList: {
@@ -147,14 +218,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingRight: 85
   },
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  addItemButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 4
+  },
   deleteButton: {
     flex: 1,
-    backgroundColor: colors.red,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: 55,
     position: 'absolute',
-    right: 32,
+    right: 10,
     height: 30,
     borderRadius: 4
   }

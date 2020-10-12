@@ -10,6 +10,7 @@ export default class App extends React.Component {
   state = {
     addRecipeVisible: false,
     recipes: [{
+      id: 1,
       name: "receita 1",
       category: {
         name: "Assados",
@@ -27,7 +28,7 @@ export default class App extends React.Component {
       ],
       tasks: [
         {
-          title: "Coloque tudo no liquidificador",
+          title: "Coloque tudo no liquidificador e mexa bem e tal tal tal",
           completed: false
         },
         {
@@ -39,7 +40,13 @@ export default class App extends React.Component {
   };
 
   addRecipe = recipe => {
-    this.state.recipes.push(recipe)
+    this.setState({recipes: [...this.state.recipes, {...recipe, id: this.state.recipes.length + 1, recipes:[] }] })
+  }
+
+  deleteRecipe = recipe => {
+    const recipes = this.state.recipes
+    recipes.splice(recipes.find(item => item.id == recipe.id)) 
+    this.setState({recipes})
   }
 
   toggleAddRecipeModal() {
@@ -47,8 +54,16 @@ export default class App extends React.Component {
   };
 
   renderList = item => {
-    return <List recipe={item} />;
+    return <List recipe={item} updateRecipe={this.updateRecipe}/>;
   };
+
+  updateRecipe = recipe => {
+    this.setState({
+      recipes: this.state.recipes.map(item => {
+        return item.id === recipe.id ? recipe : item;
+      })
+    })
+  }
 
   render() {
     return (
