@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import colors from './utils/Colors';
-import List from './components/List';
-import AddModal from './components/AddModal'
+import colors from './src/utils/Colors';
+import List from './src/components/List';
+import AddModal from './src/components/AddModal'
 
 const height = Dimensions.get('window').height; //full height
 export default class App extends React.Component {
