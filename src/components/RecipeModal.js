@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, FlatLis
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import colors from '../utils/Colors'
 import DialogInput from 'react-native-dialog-input';
+import Dialog from "react-native-dialog";
 
 export default class recipeModal extends React.Component {
   state = {
