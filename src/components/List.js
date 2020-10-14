@@ -49,14 +49,14 @@ export default class List extends React.Component {
               style={styles.recipeNumber}
             >
               <Text style={{marginRight: 4}}>{ingredients}</Text>
-              <Text style={styles.subtitle}>Ingredientes</Text>
+              <Text style={styles.subtitle}>Ingredients</Text>
             </View>
 
             <View 
               style={styles.recipeNumber}
             >
               <Text style={{marginRight: 4}}>{tasks}</Text>
-              <Text style={styles.subtitle}>Passos</Text>
+              <Text style={styles.subtitle}>Tasks</Text>
             </View>
           </View>
 

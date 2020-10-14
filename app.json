@@ -2,6 +2,7 @@
   "expo": {
     "name": "MyRecipes",
     "slug": "myrecipes",
+    "description": "My recipes is a mobile application that was developed with React Native for programming topics class of the System Analysis and Development class.",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,10 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.carolineadao.myrecipes"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "dev.carolineadao.myrecipes",
+      "versionCode": 1
     }
   }
 }

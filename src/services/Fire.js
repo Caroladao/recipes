@@ -41,7 +41,7 @@ class Fire {
     let ref = this.ref.orderBy("name");
 
       this.unsubscribe = ref.onSnapshot( snapshot => {
-        recipes = [];
+        var recipes = [];
 
         snapshot.forEach(doc => {
           recipes.push({ id: doc.id, ...doc.data() });

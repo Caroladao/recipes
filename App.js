@@ -16,7 +16,7 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    firebase = new Fire((error, user) => {
+    var firebase = new Fire((error, user) => {
       if(error) {
         return alert("Oops, parece que algo deu errado :c");
       }
