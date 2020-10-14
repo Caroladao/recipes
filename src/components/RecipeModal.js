@@ -136,7 +136,7 @@ export default class recipeModal extends React.Component {
 
           <DialogInput 
             isDialogVisible={this.state.isDialogVisible.ingredients}
-            title={`Add ingredient`}
+            title={`Adicionar novo ingrediente`}
             hintInput ={'Adicionar novo ingrediente'}
             submitInput={ (inputText) => {this.addItem(inputText, 'ingredients')} }
             closeDialog={ () => this.handleDialogVisible('ingredients')}
@@ -167,7 +167,7 @@ export default class recipeModal extends React.Component {
 
           <DialogInput 
             isDialogVisible={this.state.isDialogVisible.tasks}
-            title={`Add task`}
+            title={`Adicionar um novo passo`}
             hintInput ={'Adicionar um novo passo'}
             submitInput={ (inputText) => {this.addItem(inputText, 'tasks')} }
             closeDialog={ () => this.handleDialogVisible('tasks')}

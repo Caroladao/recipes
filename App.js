@@ -90,7 +90,7 @@ export default class App extends React.Component {
 
         { this.state.recipes.length === 0 ?
           <View style={{flex: 1, justifyContent: 'flex-start'}}>
-            <Text style={styles.noRecipes}> You don't have recipes</Text>
+            <Text style={styles.noRecipes}>Você ainda não tem receitas cadastradas</Text>
           </View>
         :
         <View style={{marginBottom: 10, paddingHorizontal: 10, height: height - 174}}>
