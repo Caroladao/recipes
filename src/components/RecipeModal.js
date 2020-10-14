@@ -3,13 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, FlatLis
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import colors from '../utils/Colors'
 import DialogInput from 'react-native-dialog-input';
+import Dialog from "react-native-dialog";
 
 export default class recipeModal extends React.Component {
   state = {
     isDialogVisible: {
       ingredients: false,
       tasks: false
-    }
+    },
+    isDialogNameVisible: false
   }
 
   handleDialogVisible = (type) => {
@@ -18,6 +20,10 @@ export default class recipeModal extends React.Component {
 
     this.setState({ isDialogVisible: dialog })
   };
+
+  handleDialogNameVisible = () => {
+    this.setState({ isDialogNameVisible: !this.state.isDialogNameVisible })
+  }
 
   toggleItemCompleted = (index, type) => {
     let recipe = this.props.recipe
@@ -36,6 +42,14 @@ export default class recipeModal extends React.Component {
       ingredients: false,
       tasks: false
     } })
+  }
+
+  changeName = text => {
+    let recipe = this.props.recipe
+    recipe.name = text
+
+    this.props.updateRecipe(recipe)
+    this.setState({isDialogNameVisible: false})
   }
 
   deleteItem = (index, type) => {
@@ -80,14 +94,25 @@ export default class recipeModal extends React.Component {
           <MaterialIcons name="close" size={30} color={colors.black} />
         </TouchableOpacity>
 
-        <View style={[styles.header, {borderBottomColor: recipe.category.color}]}>
+        <View style={[styles.header, {borderBottomColor: recipe.category.color}]}> 
           <Text style={[styles.category, {color: recipe.category.color}]}>
             {recipe.category.name}
           </Text>
-          <Text style={[styles.title, {color: recipe.category.color}]}>
-            {recipe.name}
-          </Text>
+          
+          <TouchableOpacity onPress={() => this.handleDialogNameVisible()}>
+            <Text style={[styles.title, {color: recipe.category.color}]}>
+              {recipe.name}
+            </Text>
+            </TouchableOpacity>
         </View>
+
+        <DialogInput 
+          isDialogVisible={this.state.isDialogNameVisible}
+          title={`Nome da Receita`}
+          hintInput ={recipe.name}
+          submitInput={ (inputText) => {this.changeName(inputText)} }
+          closeDialog={ () => this.handleDialogNameVisible()}
+        ></DialogInput>
 
         <View style={styles.section}>
           <Text style={styles.itemTitle}>
@@ -106,7 +131,7 @@ export default class recipeModal extends React.Component {
               onPress={() => this.handleDialogVisible('ingredients')}
             >
               <MaterialIcons name="add" size={24} color={colors.black} />
-              <Text>Add ingrediente</Text>
+              <Text>Adicionar ingredientes</Text>
             </TouchableOpacity>
           </View>
 
@@ -137,7 +162,7 @@ export default class recipeModal extends React.Component {
               onPress={() => this.handleDialogVisible('tasks')}
             >
               <MaterialIcons name="add" size={24} color={colors.black} />
-              <Text>Add passos</Text>
+              <Text>Adicionar passos</Text>
             </TouchableOpacity>
           </View>
 

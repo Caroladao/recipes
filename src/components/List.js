@@ -3,14 +3,20 @@ import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
 import RecipeModal from './RecipeModal'
 import colors from '../utils/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import Dialog from "react-native-dialog";
 
 export default class List extends React.Component {
   state = {
-    showRecipeVisible: false
+    showRecipeVisible: false,
+    dialogDeleteRecipe: false
   }
 
   toggleRecipeModal = () => {
     this.setState({ showRecipeVisible: !this.state.showRecipeVisible })
+  }
+
+  handleDialogDelete = () => {
+    this.setState({ dialogDeleteRecipe: !this.state.dialogDeleteRecipe })
   }
 
   render() {
@@ -60,9 +66,20 @@ export default class List extends React.Component {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.delete} onPress={() => this.props.deleteRecipe(recipe)} >
+          <TouchableOpacity style={styles.delete} onPress={() => this.handleDialogDelete()} >
             <MaterialIcons name="delete" size={24} color={colors.black} />
           </TouchableOpacity>
+
+          <View>
+            <Dialog.Container visible={this.state.dialogDeleteRecipe}>
+              <Dialog.Title>Deletar Receita?</Dialog.Title>
+              <Dialog.Description>
+                Você deseja mesmo deletar esta receita? Isso não poderá ser desfeito.
+              </Dialog.Description>
+              <Dialog.Button label="Cancel" onPress={() => this.handleDialogDelete()} />
+              <Dialog.Button label="Delete" onPress={() => this.props.deleteRecipe(recipe)}/>
+            </Dialog.Container>
+          </View>
           
         </TouchableOpacity>
       </View>

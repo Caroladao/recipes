@@ -12,7 +12,8 @@ export default class App extends React.Component {
     addRecipeVisible: false,
     recipes: [],
     user: {},
-    loading: true
+    loading: true,
+    dialogDeleteRecipe: false
   };
 
   componentDidMount() {
@@ -100,7 +101,10 @@ export default class App extends React.Component {
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => this.renderList(item)}
             />
+
+          
         </View>
+
         }
       </View>
     );
