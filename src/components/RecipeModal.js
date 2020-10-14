@@ -64,7 +64,7 @@ export default class recipeModal extends React.Component {
         onPress={() => this.deleteItem( index, type )}
         style={styles.deleteButton}
       >
-        <Text style={{fontWeight: 'bold'}}> Delete </Text>
+        <Text style={{fontWeight: 'bold'}}> Excluir </Text>
       </TouchableOpacity>
     </View>
   
@@ -91,7 +91,7 @@ export default class recipeModal extends React.Component {
 
         <View style={styles.section}>
           <Text style={styles.itemTitle}>
-            Ingredients
+            Ingredientes
           </Text>
           <FlatList 
             data={ingredients} 
@@ -106,14 +106,14 @@ export default class recipeModal extends React.Component {
               onPress={() => this.handleDialogVisible('ingredients')}
             >
               <MaterialIcons name="add" size={24} color={colors.black} />
-              <Text>Add ingredient</Text>
+              <Text>Add ingrediente</Text>
             </TouchableOpacity>
           </View>
 
           <DialogInput 
             isDialogVisible={this.state.isDialogVisible.ingredients}
             title={`Add ingredient`}
-            hintInput ={'Insert new ingredient here'}
+            hintInput ={'Adicionar novo ingrediente'}
             submitInput={ (inputText) => {this.addItem(inputText, 'ingredients')} }
             closeDialog={ () => this.handleDialogVisible('ingredients')}
           >
@@ -122,7 +122,7 @@ export default class recipeModal extends React.Component {
 
         <View style={styles.section}>
           <Text style={styles.itemTitle}>
-            Tasks
+            Modo de fazer
           </Text>
           <FlatList 
             data={tasks} 
@@ -137,14 +137,14 @@ export default class recipeModal extends React.Component {
               onPress={() => this.handleDialogVisible('tasks')}
             >
               <MaterialIcons name="add" size={24} color={colors.black} />
-              <Text>Add task</Text>
+              <Text>Add passos</Text>
             </TouchableOpacity>
           </View>
 
           <DialogInput 
             isDialogVisible={this.state.isDialogVisible.tasks}
             title={`Add task`}
-            hintInput ={'Insert new task here'}
+            hintInput ={'Adicionar um novo passo'}
             submitInput={ (inputText) => {this.addItem(inputText, 'tasks')} }
             closeDialog={ () => this.handleDialogVisible('tasks')}
           >
