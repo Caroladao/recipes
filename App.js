@@ -1,53 +1,56 @@
 import React from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View, Modal } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View, Modal, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from './src/utils/Colors';
 import List from './src/components/List';
 import AddModal from './src/components/AddModal'
+import Fire from './src/services/Fire'
 
 const height = Dimensions.get('window').height; //full height
 export default class App extends React.Component {
   state = {
     addRecipeVisible: false,
-    recipes: [{
-      id: 1,
-      name: "receita 1",
-      category: {
-        name: "Assados",
-        color: "#24A6D9"
-      },
-      ingredients: [
-        {
-          title: "Dentes de Alho",
-          completed: false
-        },
-        {
-          title: "Sal",
-          completed: false
-        },
-      ],
-      tasks: [
-        {
-          title: "Coloque tudo no liquidificador e mexa bem e tal tal tal",
-          completed: false
-        },
-        {
-          title: "Deixe bater até ficar cremoso",
-          completed: false
-        }
-      ]
-    }],
+    recipes: [],
+    user: {},
+    loading: true
   };
 
-  addRecipe = recipe => {
-    this.setState({recipes: [...this.state.recipes, {...recipe, id: this.state.recipes.length + 1, recipes:[] }] })
+  componentDidMount() {
+    firebase = new Fire((error, user) => {
+      if(error) {
+        return alert("Oops, parece que algo deu errado :c");
+      }
+
+      firebase.getRecipes( recipes => {
+        this.setState({recipes, user}, () => {  
+          this.setState({ loading: false });
+        });
+      });
+
+      this.setState({user})
+    });
   }
 
-  deleteRecipe = recipe => {
-    const recipes = this.state.recipes
-    recipes.splice(recipes.find(item => item.id == recipe.id)) 
-    this.setState({recipes})
+  componentWillUnmount() {
+    firebase.detach();
   }
+
+  addRecipe = recipe => {
+    firebase.addRecipe({
+      name: recipe.name,
+      category: recipe.category,
+      ingredients: [],
+      tasks: []
+    })
+  }
+
+  updateRecipe = recipe => {
+    firebase.updateRecipe(recipe);
+  };
+
+  deleteRecipe = recipe => {
+    firebase.deleteRecipe(recipe);
+  };
 
   toggleAddRecipeModal = () => {
     this.setState({ addRecipeVisible: !this.state.addRecipeVisible });
@@ -56,15 +59,14 @@ export default class App extends React.Component {
   renderList = item => 
     <List recipe={item} updateRecipe={this.updateRecipe} deleteRecipe={this.deleteRecipe} />;
 
-  updateRecipe = recipe => {
-    this.setState({
-      recipes: this.state.recipes.map(item => {
-        return item.id === recipe.id ? recipe : item;
-      })
-    })
-  }
-
   render() {
+    if( this.state.loading ) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color={colors.blue} />
+        </View>
+      )
+    }
     return (
       <View style={styles.container}>
         <Modal
@@ -93,7 +95,7 @@ export default class App extends React.Component {
         <View style={{marginBottom: 10, paddingHorizontal: 10, height: height - 174}}>
           <FlatList 
             data={this.state.recipes} 
-            keyExtractor={ item => item.name } 
+            keyExtractor={ item => item.id.toString() } 
             horizontal={false} 
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => this.renderList(item)}

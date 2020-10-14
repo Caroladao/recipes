@@ -96,7 +96,7 @@ export default class recipeModal extends React.Component {
           <FlatList 
             data={ingredients} 
             renderItem={({item, index}) => this.renderItems(item, index, 'ingredients')}
-            keyExtractor={ item => item.title }
+            keyExtractor={(_, index) => index.toString()}
             showsVerticalScrollIndicator={false}
           />
 
@@ -127,7 +127,7 @@ export default class recipeModal extends React.Component {
           <FlatList 
             data={tasks} 
             renderItem={({item, index}) => this.renderItems(item, index, 'tasks')}
-            keyExtractor={ item => item.title }
+            keyExtractor={(_, index) => index.toString() }
             showsVerticalScrollIndicator={false}
           />
 

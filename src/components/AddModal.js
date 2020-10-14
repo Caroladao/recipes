@@ -18,7 +18,7 @@ export default class AddModal extends React.Component {
   createRecipe = () => {
     const {name, category} = this.state;
     
-    this.props.addRecipe({ name, category, ingredients: [], tasks: [] });
+    this.props.addRecipe({ name, category});
 
     this.setState({name: ""})
     this.props.closeModal();
